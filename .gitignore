@@ -63,5 +63,5 @@ yarn-error.log*
 # poetry.lock
 
 # Solutions (exclude from public repository)
-*/solution/
-*/solutions/
+**/solution/
+**/solutions/
