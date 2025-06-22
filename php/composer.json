@@ -2,7 +2,7 @@
     "name": "refactoring-training/php-exercises",
     "description": "PHP Refactoring Exercises",
     "type": "project",
-    "license": "MIT",
+    "license": "proprietary",
     "require": {
         "php": ">=8.2 <8.5"
     },
