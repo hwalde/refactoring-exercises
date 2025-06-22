@@ -206,7 +206,7 @@ cd typescript && npm run typecheck
 cd python && source venv/bin/activate
 cd python && pytest exercises/code-smells/<slug>/tests/ -v
 cd python && black --check exercises/code-smells/<slug>/
-cd python && ruff check exercises/code-smells/<slug>/
+cd python && source venv/bin/activate && ruff check exercises/code-smells/<slug>/
 cd python && mypy exercises/code-smells/<slug>/src/
 cd python && deactivate
 ```

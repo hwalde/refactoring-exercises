@@ -1,8 +1,9 @@
 """Tests for OrderProcessor - these tests must remain green after refactoring!"""
 
-import pytest
 import sys
 from pathlib import Path
+
+import pytest
 
 # Add the src directory to Python path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))

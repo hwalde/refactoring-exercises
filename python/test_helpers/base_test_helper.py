@@ -1,8 +1,8 @@
 """Base test helper utilities for refactoring exercises."""
 
-import inspect
-from typing import Any, Dict, List, TypeVar, Union
 import copy
+import inspect
+from typing import Any, TypeVar
 
 T = TypeVar("T")
 
@@ -31,7 +31,7 @@ def assert_method_is_private(obj: Any, method_name: str) -> None:
 
 
 def assert_has_attributes(
-    obj: Any, expected_attributes: List[str], message: str = ""
+    obj: Any, expected_attributes: list[str], message: str = ""
 ) -> None:
     """Assert that an object has all expected attributes."""
     for attr in expected_attributes:
@@ -54,7 +54,7 @@ def assert_within_range(
 
 
 def assert_dict_contains_keys(
-    expected_keys: List[str], actual_dict: Dict[str, Any], message: str = ""
+    expected_keys: list[str], actual_dict: dict[str, Any], message: str = ""
 ) -> None:
     """Assert that a dictionary contains all expected keys."""
     for key in expected_keys:
@@ -67,8 +67,8 @@ class MockFunction:
     """Simple mock function for testing."""
 
     def __init__(self, return_value: Any = None) -> None:
-        self.calls: List[tuple] = []
-        self.returns: List[Any] = []
+        self.calls: list[tuple] = []
+        self.returns: list[Any] = []
         self._return_value = return_value
 
     def __call__(self, *args: Any, **kwargs: Any) -> Any:

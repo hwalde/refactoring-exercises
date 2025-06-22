@@ -1,10 +1,10 @@
 """Order processing with a very long method that needs refactoring."""
 
+import uuid
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
-from typing import Dict, List, Literal, Optional, TypedDict
-import uuid
+from typing import Literal, TypedDict
 
 
 class CustomerType(Enum):
@@ -28,17 +28,17 @@ class ShippingAddress:
 
 class OrderData(TypedDict):
     customer_id: str
-    items: List[Dict[str, any]]
-    shipping_address: Dict[str, str]
-    customer_type: Optional[str]
-    coupon_code: Optional[str]
+    items: list[dict[str, any]]
+    shipping_address: dict[str, str]
+    customer_type: str | None
+    coupon_code: str | None
 
 
 @dataclass
 class ProcessedOrder:
     id: str
     customer_id: str
-    items: List[OrderItem]
+    items: list[OrderItem]
     subtotal: float
     discount: float
     tax: float
@@ -51,9 +51,9 @@ class ProcessedOrder:
 @dataclass
 class Notification:
     type: Literal["order_confirmation", "high_value_order"]
-    customer_id: Optional[str]
+    customer_id: str | None
     order_id: str
-    total: Optional[float]
+    total: float | None
     message: str
     sent_at: str
 
@@ -62,8 +62,8 @@ class OrderProcessor:
     """Processes orders with validation, calculations, and notifications."""
 
     def __init__(self) -> None:
-        self._orders: Dict[str, ProcessedOrder] = {}
-        self._notifications: List[Notification] = []
+        self._orders: dict[str, ProcessedOrder] = {}
+        self._notifications: list[Notification] = []
 
     def process_order(self, order_data: OrderData) -> ProcessedOrder:
         """Process an order - this method is too long and needs refactoring!"""
@@ -192,10 +192,10 @@ class OrderProcessor:
 
         return order
 
-    def get_orders(self) -> List[ProcessedOrder]:
+    def get_orders(self) -> list[ProcessedOrder]:
         """Get all processed orders."""
         return list(self._orders.values())
 
-    def get_notifications(self) -> List[Notification]:
+    def get_notifications(self) -> list[Notification]:
         """Get all notifications."""
         return self._notifications.copy()
