@@ -2,8 +2,9 @@
     "name": "refactoring-training/php-exercises",
     "description": "PHP Refactoring Exercises",
     "type": "project",
+    "license": "MIT",
     "require": {
-        "php": ">=8.2 <8.4"
+        "php": ">=8.2 <8.5"
     },
     "require-dev": {
         "phpunit/phpunit": "^10.0",
