@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+         executionOrder="depends,defects"
+         failOnRisky="true"
+         failOnWarning="true"
+         stopOnFailure="false"
+         cacheDirectory=".phpunit.cache">
+    <testsuites>
+        <testsuite name="Exercises">
+            <directory>exercises</directory>
+        </testsuite>
+    </testsuites>
+    <coverage>
+        <report>
+            <html outputDirectory="coverage" lowUpperBound="50" highLowerBound="80"/>
+            <text outputFile="coverage.txt"/>
+        </report>
+    </coverage>
+    <source>
+        <include>
+            <directory>exercises</directory>
+        </include>
+        <exclude>
+            <directory>exercises/*/tests</directory>
+            <directory>exercises/*/solution</directory>
+            <directory>exercises/*/hints</directory>
+        </exclude>
+    </source>
+</phpunit>

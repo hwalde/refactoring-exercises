@@ -1,0 +1,331 @@
+name: Test All Languages
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:  # Manual trigger
+
+jobs:
+  php-tests:
+    runs-on: ubuntu-latest
+    name: PHP Tests (8.2 & 8.3)
+    
+    strategy:
+      matrix:
+        php-version: ['8.2', '8.3']
+        
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup PHP ${{ matrix.php-version }}
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-version }}
+        extensions: mbstring, xml, curl, zip
+        tools: composer
+        coverage: none
+        
+    - name: Validate composer.json
+      run: composer validate --strict
+      working-directory: ./php
+      
+    - name: Cache Composer dependencies
+      uses: actions/cache@v3
+      with:
+        path: php/vendor
+        key: php-${{ matrix.php-version }}-composer-${{ hashFiles('php/composer.lock') }}
+        restore-keys: php-${{ matrix.php-version }}-composer-
+        
+    - name: Install Composer dependencies
+      run: composer install --prefer-dist --no-progress --no-suggest --no-dev
+      working-directory: ./php
+      
+    - name: Run PHPUnit tests
+      run: vendor/bin/phpunit --no-coverage
+      working-directory: ./php
+      
+    - name: Run PHPStan analysis
+      run: vendor/bin/phpstan analyse
+      working-directory: ./php
+      
+    - name: Check PHP-CS-Fixer (dry run)
+      run: vendor/bin/php-cs-fixer fix --dry-run --diff
+      working-directory: ./php
+
+  typescript-tests:
+    runs-on: ubuntu-latest
+    name: TypeScript Tests
+    
+    strategy:
+      matrix:
+        node-version: ['18.x', '20.x']
+        
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: typescript/package-lock.json
+        
+    - name: Install dependencies
+      run: npm ci
+      working-directory: ./typescript
+      
+    - name: Run TypeScript compiler check
+      run: npm run typecheck
+      working-directory: ./typescript
+      
+    - name: Run ESLint
+      run: npm run lint
+      working-directory: ./typescript
+      
+    - name: Check Prettier formatting
+      run: npm run format:check
+      working-directory: ./typescript
+      
+    - name: Run Jest tests
+      run: npm test
+      working-directory: ./typescript
+      
+    - name: Run tests with coverage
+      run: npm run test:coverage
+      working-directory: ./typescript
+      
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./typescript/coverage/lcov.info
+        flags: typescript
+        name: typescript-coverage
+
+  python-tests:
+    runs-on: ubuntu-latest
+    name: Python Tests
+    
+    strategy:
+      matrix:
+        python-version: ['3.11', '3.12']
+        
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'pip'
+        cache-dependency-path: python/requirements.txt
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+      working-directory: ./python
+      
+    - name: Run Black formatter check
+      run: black --check .
+      working-directory: ./python
+      
+    - name: Run Ruff linter
+      run: ruff check .
+      working-directory: ./python
+      
+    - name: Run mypy type checker
+      run: mypy exercises/code-smells/long-method/src/
+      working-directory: ./python
+      
+    - name: Run pytest
+      run: pytest exercises/ -v --cov=exercises --cov-report=xml
+      working-directory: ./python
+      
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        file: ./python/coverage.xml
+        flags: python
+        name: python-coverage
+
+  # Cross-platform testing for setup scripts
+  setup-scripts:
+    runs-on: ${{ matrix.os }}
+    name: Test Setup Scripts
+    
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Test Linux setup script (Ubuntu)
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+        chmod +x setup-linux.sh
+        # Dry run - check script syntax
+        bash -n setup-linux.sh
+        echo "✅ Linux setup script syntax is valid"
+        
+    - name: Test Windows setup script
+      if: matrix.os == 'windows-latest'
+      run: |
+        # Check PowerShell script syntax
+        powershell -Command "& { . .\setup-windows.ps1; 'Syntax check passed' }" -WhatIf
+        echo "✅ Windows setup script syntax is valid"
+
+  # Integration test: Full workflow
+  integration-test:
+    runs-on: ubuntu-latest
+    name: Integration Test
+    needs: [php-tests, typescript-tests, python-tests]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup all languages
+      run: |
+        # Setup PHP
+        sudo apt-get update
+        sudo apt-get install -y php8.3 php8.3-cli php8.3-mbstring php8.3-xml php8.3-curl php8.3-zip
+        curl -sS https://getcomposer.org/installer | php
+        sudo mv composer.phar /usr/local/bin/composer
+        
+        # Setup Node.js
+        curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo -E bash -
+        sudo apt-get install -y nodejs
+        
+        # Setup Python
+        sudo apt-get install -y python3 python3-pip python3-venv
+        
+    - name: Run full integration test
+      run: |
+        # PHP
+        cd php
+        composer install --no-dev
+        vendor/bin/phpunit --no-coverage
+        vendor/bin/phpstan analyse
+        cd ..
+        
+        # TypeScript  
+        cd typescript
+        npm install
+        npm test
+        npm run lint
+        cd ..
+        
+        # Python
+        cd python
+        python3 -m venv venv
+        source venv/bin/activate
+        pip install -r requirements.txt
+        pytest exercises/ -v
+        black --check .
+        ruff check .
+        cd ..
+        
+    - name: Verify exercise structure
+      run: |
+        echo "🔍 Checking exercise structure..."
+        
+        # Check that all required directories exist
+        test -d "php/exercises/CodeSmells/LongMethod" || exit 1
+        test -d "typescript/exercises/code-smells/long-method" || exit 1  
+        test -d "python/exercises/code-smells/long-method" || exit 1
+        
+        # Check that task.md files exist
+        test -f "php/exercises/CodeSmells/LongMethod/task.md" || exit 1
+        test -f "typescript/exercises/code-smells/long-method/task.md" || exit 1
+        test -f "python/exercises/code-smells/long-method/task.md" || exit 1
+        
+        # Check that all required categories exist
+        for lang in php typescript python; do
+          for category in basic-refactorings clean-code domain-driven legacy-modernization; do
+            test -d "$lang/exercises/$category" || exit 1
+          done
+        done
+        
+        echo "✅ Exercise structure is valid"
+
+  # Documentation check
+  documentation:
+    runs-on: ubuntu-latest
+    name: Documentation Check
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Check required documentation files
+      run: |
+        echo "📚 Checking documentation..."
+        
+        # Check main documentation files
+        test -f "README.md" || exit 1
+        test -f "GUIDE.md" || exit 1
+        test -f "IDE_SETUP.md" || exit 1
+        test -f "LINUX_REQUIREMENTS.md" || exit 1
+        test -f "REMOTE_DESKTOP_REQUIREMENTS.md" || exit 1
+        
+        # Check setup scripts
+        test -f "setup-linux.sh" || exit 1
+        test -f "setup-windows.ps1" || exit 1
+        
+        # Check VS Code configuration
+        test -f ".vscode/tasks.json" || exit 1
+        test -f ".vscode/launch.json" || exit 1
+        test -f ".vscode/settings.json" || exit 1
+        test -f ".vscode/extensions.json" || exit 1
+        
+        echo "✅ All required documentation files are present"
+        
+    - name: Check German language in task files
+      run: |
+        echo "🇩🇪 Checking German language in task descriptions..."
+        
+        # Check for German terms in task.md files
+        if find . -name "task.md" -exec grep -l "Aufgabenstellung\|Was zu tun ist\|Akzeptanzkriterien" {} \; | wc -l | grep -q "3"; then
+          echo "✅ German language found in task descriptions"
+        else
+          echo "❌ German language missing in some task descriptions"
+          exit 1
+        fi
+
+  # Final summary
+  summary:
+    runs-on: ubuntu-latest
+    name: Test Summary
+    needs: [php-tests, typescript-tests, python-tests, setup-scripts, integration-test, documentation]
+    if: always()
+    
+    steps:
+    - name: Check all jobs status
+      run: |
+        echo "📊 Test Summary:"
+        echo "==============="
+        echo "PHP Tests: ${{ needs.php-tests.result }}"
+        echo "TypeScript Tests: ${{ needs.typescript-tests.result }}"
+        echo "Python Tests: ${{ needs.python-tests.result }}"
+        echo "Setup Scripts: ${{ needs.setup-scripts.result }}"
+        echo "Integration Test: ${{ needs.integration-test.result }}"
+        echo "Documentation: ${{ needs.documentation.result }}"
+        
+        if [[ "${{ needs.php-tests.result }}" == "success" && \
+              "${{ needs.typescript-tests.result }}" == "success" && \
+              "${{ needs.python-tests.result }}" == "success" && \
+              "${{ needs.setup-scripts.result }}" == "success" && \
+              "${{ needs.integration-test.result }}" == "success" && \
+              "${{ needs.documentation.result }}" == "success" ]]; then
+          echo "🎉 All tests passed successfully!"
+        else
+          echo "❌ Some tests failed. Check the logs above."
+          exit 1
+        fi

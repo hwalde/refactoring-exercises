@@ -1,0 +1,33 @@
+{
+    "name": "refactoring-training/php-exercises",
+    "description": "PHP Refactoring Exercises",
+    "type": "project",
+    "require": {
+        "php": ">=8.2 <8.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0",
+        "friendsofphp/php-cs-fixer": "^3.40",
+        "phpstan/phpstan": "^1.10"
+    },
+    "autoload": {
+        "psr-4": {
+            "RefactoringExercises\\": "exercises/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "RefactoringExercises\\Tests\\": "exercises/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "test-coverage": "phpunit --coverage-html=coverage",
+        "phpstan": "phpstan analyse",
+        "cs-fix": "php-cs-fixer fix",
+        "cs-check": "php-cs-fixer fix --dry-run --diff"
+    },
+    "config": {
+        "sort-packages": true
+    }
+}

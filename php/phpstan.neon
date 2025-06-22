@@ -1,0 +1,10 @@
+parameters:
+    level: 8
+    paths:
+        - exercises
+    excludePaths:
+        - exercises/*/tests
+        - exercises/*/solution
+        - exercises/*/hints
+    checkMissingIterableValueType: false
+    reportUnmatchedIgnoredErrors: false
