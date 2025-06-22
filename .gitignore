@@ -32,6 +32,7 @@ Thumbs.db
 .coverage
 coverage.xml
 junit.xml
+.phpunit.cache/
 
 # Logs
 *.log
