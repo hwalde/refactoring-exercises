@@ -65,3 +65,8 @@ yarn-error.log*
 # Solutions (exclude from public repository)
 **/solution/
 **/solutions/
+
+# Solution test symlinks (local development only)
+**/solution/*Test.php
+**/solution/*.test.ts  
+**/solution/test_*.py

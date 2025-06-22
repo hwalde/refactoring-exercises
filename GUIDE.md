@@ -245,6 +245,46 @@ Siehe `exercises/code-smells/long-method/` in allen drei Sprachen als Referenz-I
 Führe alle Test-Kommandos aus dem Abschnitt "Aufgabe testen und validieren" aus.
 **Ohne erfolgreiche Tests in allen drei Sprachen ist die Aufgabe NICHT fertig!**
 
+### 3. **Musterlösungen erstellen und testen**
+1. Erstelle refactorierten Code in `solution/` Ordnern:
+   - `OrderProcessorRefactored.php` (PHP)
+   - `OrderProcessorRefactored.ts` (TypeScript)  
+   - `order_processor_refactored.py` (Python)
+
+2. **Automatische Test-Generierung** (empfohlen):
+   ```bash
+   # Generiert Solution-Tests automatisch aus Original-Tests
+   ./generate_solution_tests.py
+   ```
+   **Vorteile:**
+   - 100% identische Test-Logik (keine Duplikation)
+   - Automatische Anpassung der Imports/Klassen-Namen
+   - Garantiert konsistente Tests
+
+3. **Alternative: Manuelle Test-Erstellung**
+   - Kopiere Original-Test in `solution/` Ordner
+   - **WICHTIG:** Test muss **exakt identisch** zum Original sein
+   - Nur Import/Klassen-Namen ändern für Solution-Klasse
+
+4. **Validierung der Setup:**
+   ```bash
+   # Prüft ob alle Solution-Tests vorhanden sind
+   ./solution_tests_setup.sh
+   ```
+
+5. **Teste alle Musterlösungen:**
+   ```bash
+   # PHP
+   cd php && vendor/bin/phpunit exercises/
+   
+   # TypeScript
+   cd typescript && npm test
+   
+   # Python
+   cd python && source venv/bin/activate && pytest exercises/ -v
+   ```
+**Die Musterlösungen MÜSSEN alle Tests bestehen!**
+
 ### 3. Dokumentation vervollständigen
 - README.md pro Aufgabe
 - Hints erstellen
