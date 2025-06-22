@@ -43,11 +43,11 @@ validate_solution_tests() {
     
     case "$language" in
         "php")
-            if [[ ! -f "$exercise_dir/solution/"*"Refactored.php" ]]; then
+            if ! ls "$exercise_dir/solution/"*"Refactored.php" &>/dev/null; then
                 print_error "PHP: Missing refactored solution in $exercise_dir/solution/"
                 ((errors++))
             fi
-            if [[ ! -f "$exercise_dir/solution/"*"RefactoredTest.php" ]]; then
+            if ! ls "$exercise_dir/solution/"*"RefactoredTest.php" &>/dev/null; then
                 print_error "PHP: Missing solution test in $exercise_dir/solution/"
                 ((errors++))
             else
@@ -56,11 +56,11 @@ validate_solution_tests() {
             ;;
             
         "typescript")
-            if [[ ! -f "$exercise_dir/solution/"*"Refactored.ts" ]]; then
+            if ! ls "$exercise_dir/solution/"*"Refactored.ts" &>/dev/null; then
                 print_error "TypeScript: Missing refactored solution in $exercise_dir/solution/"
                 ((errors++))
             fi
-            if [[ ! -f "$exercise_dir/solution/"*"Refactored.test.ts" ]]; then
+            if ! ls "$exercise_dir/solution/"*"Refactored.test.ts" &>/dev/null; then
                 print_error "TypeScript: Missing solution test in $exercise_dir/solution/"
                 ((errors++))
             else
@@ -69,11 +69,11 @@ validate_solution_tests() {
             ;;
             
         "python")
-            if [[ ! -f "$exercise_dir/solution/"*"_refactored.py" ]]; then
+            if ! ls "$exercise_dir/solution/"*"_refactored.py" &>/dev/null; then
                 print_error "Python: Missing refactored solution in $exercise_dir/solution/"
                 ((errors++))
             fi
-            if [[ ! -f "$exercise_dir/solution/test_"*"_refactored.py" ]]; then
+            if ! ls "$exercise_dir/solution/test_"*"_refactored.py" &>/dev/null; then
                 print_error "Python: Missing solution test in $exercise_dir/solution/"
                 ((errors++))
             else
@@ -90,11 +90,11 @@ total_errors=0
 # Process PHP exercises
 if [[ -d "php/exercises" ]]; then
     print_info "Validating PHP solution tests..."
-    find php/exercises -type d -name "solution" | while read solution_dir; do
+    while IFS= read -r -d '' solution_dir; do
         exercise_dir=$(dirname "$solution_dir")
         validate_solution_tests "$exercise_dir" "php"
         total_errors=$((total_errors + $?))
-    done
+    done < <(find php/exercises -type d -name "solution" -print0)
 fi
 
 # Process TypeScript exercises

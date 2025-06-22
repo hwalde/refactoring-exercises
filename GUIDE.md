@@ -39,11 +39,21 @@ exercises/<kategorie>/<slug>/
 ### 2. Ordnerstruktur erstellen
 
 ```bash
-# Für alle drei Sprachen
-mkdir -p php/exercises/code-smells/<slug>/{src,tests,hints,solution}
+# WICHTIG: Vom refactoring-exercises/ Hauptordner ausführen!
+
+# PHP (CamelCase Konvention)
+mkdir -p php/exercises/CodeSmells/<PascalCaseSlug>/{hints,solution}
+
+# TypeScript (kebab-case Konvention)  
 mkdir -p typescript/exercises/code-smells/<slug>/{src,tests,hints,solution}
+
+# Python (kebab-case Konvention)
 mkdir -p python/exercises/code-smells/<slug>/{src,tests,hints,solution}
 ```
+
+**📁 Wichtige Unterschiede:**
+- **PHP**: Direkte Dateien im Exercise-Ordner, CamelCase-Pfade
+- **TypeScript/Python**: Separate `src/` und `tests/` Unterordner, kebab-case-Pfade
 
 ### 3. task.md erstellen
 
@@ -137,7 +147,7 @@ Was danach zu tun ist
 
 ### 7. README.md erstellen
 
-**Template**:
+**Template** (für jede Sprache anpassen):
 ```markdown
 # <Aufgaben-Titel>
 
@@ -147,9 +157,23 @@ Was danach zu tun ist
 
 ## Schnellstart
 
-1. Tests ausführen: `<test-command>`
-2. Code in `src/` bearbeiten
-3. Tests erneut ausführen
+1. **Tests ausführen**:
+   ```bash
+   # PHP (vom refactoring-exercises/ Ordner)
+   cd php && vendor/bin/phpunit exercises/CodeSmells/<PascalCaseSlug>/
+   
+   # TypeScript (vom refactoring-exercises/ Ordner)  
+   cd typescript && npm test -- --testPathPattern="<slug>"
+   
+   # Python (vom refactoring-exercises/ Ordner)
+   cd python && source venv/bin/activate && pytest exercises/code-smells/<slug>/tests/ -v
+   ```
+
+2. **Code bearbeiten**: 
+   - PHP: Dateien direkt im Exercise-Ordner
+   - TypeScript/Python: Dateien in `src/` Unterordner
+
+3. **Tests erneut ausführen** (müssen grün bleiben!)
 
 ## Ziel
 
@@ -165,23 +189,26 @@ Was danach zu tun ist
 
 **WICHTIG**: Jede neue Aufgabe MUSS in allen drei Sprachen getestet werden, bevor sie als fertig gilt!
 
-**Test-Kommandos für Linux/macOS**:
+**Test-Kommandos** (vom refactoring-exercises/ Hauptordner ausführen):
 ```bash
-# PHP - Tests ausführen
+# PHP - Tests und Code-Qualität prüfen
 cd php && vendor/bin/phpunit exercises/CodeSmells/<PascalCaseSlug>/
-cd php && vendor/bin/phpstan analyse
-cd php && vendor/bin/php-cs-fixer fix --dry-run --diff
+cd php && vendor/bin/phpstan analyse exercises/CodeSmells/<PascalCaseSlug>/
+cd php && vendor/bin/php-cs-fixer fix --dry-run --diff exercises/CodeSmells/<PascalCaseSlug>/
 
-# TypeScript - Tests ausführen  
-cd typescript && npm test exercises/code-smells/<slug>/tests/
+# TypeScript - Tests und Code-Qualität prüfen  
+cd typescript && npm test -- --testPathPattern="exercises/code-smells/<slug>"
 cd typescript && npm run lint
 cd typescript && npm run format:check
+cd typescript && npm run typecheck
 
-# Python - Tests ausführen (mit venv)
-cd python && source venv/bin/activate && pytest exercises/code-smells/<slug>/tests/
-cd python && source venv/bin/activate && black --check .
-cd python && source venv/bin/activate && ruff check .
-cd python && source venv/bin/activate && mypy exercises/code-smells/<slug>/src/
+# Python - Tests und Code-Qualität prüfen (mit venv)
+cd python && source venv/bin/activate
+cd python && pytest exercises/code-smells/<slug>/tests/ -v
+cd python && black --check exercises/code-smells/<slug>/
+cd python && ruff check exercises/code-smells/<slug>/
+cd python && mypy exercises/code-smells/<slug>/src/
+cd python && deactivate
 ```
 
 **Qualitätssicherung - Checkliste vor Commit**:
@@ -232,20 +259,24 @@ Siehe `exercises/code-smells/long-method/` in allen drei Sprachen als Referenz-I
 - Vollständige Test-Coverage
 - Schrittweise Hints verfügbar
 
-## Workflow für neue Aufgaben
+## 🔄 Workflow für neue Aufgaben
 
-### 1. Aufgabe erstellen
-1. Slug festlegen (kebab-case)
-2. Ordnerstruktur anlegen
-3. task.md mit Frontmatter erstellen
-4. Code in allen drei Sprachen implementieren
-5. Tests für alle Sprachen schreiben
+### 1. Vorbereitung und Setup
+1. **Slug festlegen** (kebab-case, z.B. `long-method`)
+2. **Ordnerstruktur anlegen** (siehe Abschnitt 2 - beachte Unterschiede zwischen Sprachen!)
+3. **task.md mit Frontmatter erstellen** (in allen drei Sprachen identisch)
 
-### 2. **OBLIGATORISCH: Vollständige Validierung**
-Führe alle Test-Kommandos aus dem Abschnitt "Aufgabe testen und validieren" aus.
-**Ohne erfolgreiche Tests in allen drei Sprachen ist die Aufgabe NICHT fertig!**
+### 2. Code und Tests implementieren
+4. **Problem-Code implementieren** (in allen drei Sprachen, identische Geschäftslogik)
+5. **Tests schreiben** (müssen vor und nach Refactoring grün sein)
+6. **README.md und Hints erstellen**
 
-### 3. **Musterlösungen erstellen und testen**
+### 3. **🚨 OBLIGATORISCHE Validierung Original-Aufgaben**
+7. **Alle Test-Kommandos ausführen** (siehe Abschnitt "Aufgabe testen und validieren")
+8. **Code-Style prüfen** (alle Linter müssen grün sein)
+**❌ Ohne erfolgreiche Tests in allen drei Sprachen ist die Aufgabe NICHT fertig!**
+
+### 4. **Musterlösungen erstellen und testen**
 1. Erstelle refactorierten Code in `solution/` Ordnern:
    - `OrderProcessorRefactored.php` (PHP)
    - `OrderProcessorRefactored.ts` (TypeScript)  
@@ -272,36 +303,65 @@ Führe alle Test-Kommandos aus dem Abschnitt "Aufgabe testen und validieren" aus
    ./solution_tests_setup.sh
    ```
 
-5. **Teste alle Musterlösungen:**
+5. **🚨 OBLIGATORISCHE Validierung aller Musterlösungen:**
    ```bash
-   # PHP
-   cd php && vendor/bin/phpunit exercises/
+   # PHP - Solution-Tests ausführen
+   cd php && vendor/bin/phpunit exercises/CodeSmells/<PascalCaseSlug>/solution/
    
-   # TypeScript
-   cd typescript && npm test
+   # TypeScript - Solution-Tests ausführen
+   cd typescript && npm test -- --testPathPattern="solution"
    
-   # Python
-   cd python && source venv/bin/activate && pytest exercises/ -v
+   # Python - Solution-Tests ausführen 
+   cd python && source venv/bin/activate && pytest exercises/code-smells/<slug>/solution/ -v
    ```
-**Die Musterlösungen MÜSSEN alle Tests bestehen!**
+   **❌ Die Musterlösungen MÜSSEN alle Tests bestehen!**
 
-### 3. Dokumentation vervollständigen
+### 5. Dokumentation vervollständigen
 - README.md pro Aufgabe
 - Hints erstellen
 - Zeitschätzung validieren
 
-### 4. Final Review
-- Alle Checklisten-Punkte abgehakt
-- Cross-platform getestet (Linux-Befehle)
-- Ready für Commit
+### 6. Final Review und Abnahme
+- [ ] **Original-Aufgaben**: Alle Tests grün in allen drei Sprachen
+- [ ] **Musterlösungen**: Alle Tests grün in allen drei Sprachen  
+- [ ] **Code-Style**: Alle Linter ohne Fehler
+- [ ] **Dokumentation**: Vollständig und verständlich
+- [ ] **Automatisierte Validierung**: `./solution_tests_setup.sh` erfolgreich
+- [ ] **Cross-platform**: Linux-Befehle getestet
+- [ ] **Ready für Commit**: Alle Kriterien erfüllt
+
+### 7. Git Commit und Push
+```bash
+# 1. Sicherstellen dass master branch aktiv ist
+git branch --show-current  # Sollte "master" anzeigen
+git checkout master        # Falls nötig
+
+# 2. Alle neuen Dateien hinzufügen (Solutions werden automatisch ignoriert)
+git add .
+
+# 3. Commit mit standardisierter Message
+git commit -m "Added exercise <slug>"
+# Beispiel: git commit -m "Added exercise long-method"
+
+# 4. Zum Remote Repository pushen
+git push origin master
+```
+
+**✅ Fertig!** Die neue Aufgabe ist jetzt verfügbar für alle Teilnehmer.
 
 ### Automatisierte Validierung
-```bash
-# Alle Sprachen testen
-./scripts/test-all-exercises.sh
 
-# Spezifische Aufgabe
-./scripts/test-exercise.sh <slug>
+```bash
+# 1. Musterlösungen erstellen und Tests generieren
+./generate_solution_tests.py
+
+# 2. Alle Solution-Tests validieren
+./solution_tests_setup.sh
+
+# 3. Alle Tests ausführen (Original + Solutions)
+cd php && vendor/bin/phpunit exercises/
+cd typescript && npm test
+cd python && source venv/bin/activate && pytest exercises/ -v && deactivate
 ```
 
 ## Häufige Fehler vermeiden
