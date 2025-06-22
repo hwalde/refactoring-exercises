@@ -332,9 +332,9 @@ Siehe `exercises/code-smells/long-method/` in allen drei Sprachen als Referenz-I
 
 ### 7. Git Commit und Push
 ```bash
-# 1. Sicherstellen dass master branch aktiv ist
-git branch --show-current  # Sollte "master" anzeigen
-git checkout master        # Falls nötig
+# 1. Sicherstellen dass main branch aktiv ist
+git branch --show-current  # Sollte "main" anzeigen
+git checkout main          # Falls nötig
 
 # 2. Alle neuen Dateien hinzufügen (Solutions werden automatisch ignoriert)
 git add .
@@ -344,7 +344,7 @@ git commit -m "Added exercise <slug>"
 # Beispiel: git commit -m "Added exercise long-method"
 
 # 4. Zum Remote Repository pushen
-git push origin master
+git push origin main
 ```
 
 **✅ Fertig!** Die neue Aufgabe ist jetzt verfügbar für alle Teilnehmer.
