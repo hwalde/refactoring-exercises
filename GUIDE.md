@@ -78,10 +78,27 @@ mkdir -p python/exercises/<kategorie>/<slug>/{src,tests,hints,solution}
 ```
 
 **📁 Wichtige Unterschiede:**
-- **PHP**: Direkte Dateien im Exercise-Ordner, CamelCase-Pfade
+- **PHP**: Direkte Dateien im Exercise-Ordner, PascalCase-Pfade
 - **TypeScript/Python**: Separate `src/` und `tests/` Unterordner, kebab-case-Pfade
 
-### 3. task.md erstellen
+### 3. Aufgabenkonzept entwickeln und absegnen
+
+**🚨 WICHTIG - Qualitätssicherung:**
+
+**Schritt 3a: Konzept-Dialog**
+1. **Aufgabe besprechen**: Idee, Ziel und Lerninhalt im Dialog erklären
+2. **Fachliche Validierung**: Sicherstellen dass das Problem realistisch und lehrreich ist
+3. **Scope definieren**: Umfang und Schwierigkeit festlegen
+
+**Schritt 3b: Aufgabentext-Entwurf**
+1. **Ersten Entwurf erstellen**: task.md mit allen Abschnitten verfassen
+2. **Präsentation**: Vollständigen Text zur Begutachtung vorlegen
+3. **Zustimmung einholen**: ✅ **NUR mit expliziter Zustimmung fortfahren!**
+4. **Iterationen**: Bei Änderungswünschen überarbeiten und erneut präsentieren
+
+**❌ Ohne Zustimmung des Aufgabentexts NICHT mit der Implementierung beginnen!**
+
+### 4. task.md erstellen
 
 **YAML-Frontmatter** (identisch in allen Sprachen):
 ```yaml
@@ -106,7 +123,7 @@ prerequisites: []  # Array von Slug-Namen
 
 **🇩🇪 WICHTIG - Sprache**: Alle Aufgabenbeschreibungen, Hinweise und Texte die Studenten lesen müssen auf Deutsch sein! Nur Quellcode, technische Fachbegriffe (wie "Long Method", "Extract Method") und Variablennamen bleiben auf Englisch.
 
-### 4. Problem-Code erstellen
+### 5. Problem-Code erstellen
 
 **Richtlinien**:
 - **Realistisch**: Keine Toy-Examples, sondern realistische Geschäftslogik
@@ -134,7 +151,7 @@ prerequisites: []  # Array von Slug-Namen
 - PEP 8 compliant
 - Docstrings für Klassen/Methoden
 
-### 5. Tests schreiben
+### 6. Tests schreiben
 
 **Wichtige Prinzipien**:
 - Tests definieren das erwartete Verhalten
@@ -148,7 +165,7 @@ prerequisites: []  # Array von Slug-Namen
 - **Error Cases**: Fehlerbehandlung
 - **Integration**: Zusammenspiel der Komponenten
 
-### 6. Hints erstellen
+### 7. Hints erstellen
 
 **Gestaffeltes System**:
 - **hint-1.md**: Problem analysieren, Blöcke identifizieren
@@ -171,7 +188,7 @@ Konkreter nächster Schritt
 Was danach zu tun ist
 ```
 
-### 7. README.md erstellen
+### 8. README.md erstellen
 
 **Template** (für jede Sprache anpassen):
 ```markdown
@@ -211,7 +228,7 @@ Was danach zu tun ist
 - Schrittweise Hinweise: `hints/`
 ```
 
-### 8. Aufgabe testen und validieren
+### 9. Aufgabe testen und validieren
 
 **WICHTIG**: Jede neue Aufgabe MUSS in allen drei Sprachen getestet werden, bevor sie als fertig gilt!
 
@@ -239,6 +256,8 @@ cd python && deactivate
 
 **Qualitätssicherung - Checkliste vor Commit**:
 - [ ] **Tests laufen erfolgreich in allen drei Sprachen** (OBLIGATORISCH!)
+- [ ] **Aufgabe existiert in ALLEN drei Sprachen:** PHP, TypeScript UND Python (sicher ist sicher!)
+- [ ] **Identische fachliche Logik** in allen drei Sprachen umgesetzt
 - [ ] Code Style korrekt (alle Linter ohne Fehler)
 - [ ] task.md vollständig und verständlich
 - [ ] Hints führen zur Lösung
@@ -348,6 +367,8 @@ Siehe `exercises/code-smells/long-method/` in allen drei Sprachen als Referenz-I
 - Zeitschätzung validieren
 
 ### 6. Final Review und Abnahme
+- [ ] **Vollständigkeit**: Aufgabe existiert in ALLEN drei Sprachen (PHP, TypeScript, Python)
+- [ ] **Fachliche Konsistenz**: Identische Geschäftslogik in allen Sprachen
 - [ ] **Original-Aufgaben**: Alle Tests grün in allen drei Sprachen
 - [ ] **Musterlösungen**: Alle Tests grün in allen drei Sprachen  
 - [ ] **Code-Style**: Alle Linter ohne Fehler
