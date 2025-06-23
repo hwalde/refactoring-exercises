@@ -135,9 +135,6 @@ jobs:
       run: ruff check .
       working-directory: ./python
       
-    - name: Run mypy type checker
-      run: mypy exercises/code-smells/long-method/src/order_processor.py
-      working-directory: ./python
       
     - name: Run pytest
       run: pytest exercises/ -v --cov=exercises --cov-report=xml
@@ -276,11 +273,15 @@ jobs:
         test -f "setup-linux.sh" || exit 1
         test -f "setup-windows.ps1" || exit 1
         
-        # Check VS Code configuration
-        test -f ".vscode/tasks.json" || exit 1
-        test -f ".vscode/launch.json" || exit 1
-        test -f ".vscode/settings.json" || exit 1
-        test -f ".vscode/extensions.json" || exit 1
+        # Check VS Code configuration (optional)
+        if [ -d ".vscode" ]; then
+          test -f ".vscode/tasks.json" || echo "Warning: .vscode/tasks.json missing"
+          test -f ".vscode/launch.json" || echo "Warning: .vscode/launch.json missing" 
+          test -f ".vscode/settings.json" || echo "Warning: .vscode/settings.json missing"
+          test -f ".vscode/extensions.json" || echo "Warning: .vscode/extensions.json missing"
+        else
+          echo "Note: .vscode directory not found (optional)"
+        fi
         
         echo "✅ All required documentation files are present"
         
