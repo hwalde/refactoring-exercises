@@ -16,24 +16,10 @@ namespace RefactoringExercises\CodeSmells\ShotgunSurgery;
 class NotificationService
 {
     private array $sentNotifications = [];
-    private array $emailConfig;
-    private array $smsConfig;
-    private array $pushConfig;
 
     public function __construct()
     {
-        $this->emailConfig = [
-            'smtp_host' => 'mail.example.com',
-            'smtp_port' => 587,
-            'username' => 'notifications@example.com'
-        ];
-        $this->smsConfig = [
-            'provider' => 'TwilioSMS',
-            'api_key' => 'fake_api_key'
-        ];
-        $this->pushConfig = [
-            'firebase_key' => 'fake_firebase_key'
-        ];
+        // Configuration could be injected here in a real implementation
     }
 
     // ORDER-RELATED NOTIFICATIONS (scattered in different methods)
