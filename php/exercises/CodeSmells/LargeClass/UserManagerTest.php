@@ -395,6 +395,7 @@ class UserManagerTest extends TestCase
 
         // Validate session
         $validatedUser = $this->userManager->validateSession($session['token']);
+        $this->assertNotNull($validatedUser);
         $this->assertEquals($user['username'], $validatedUser['username']);
 
         // Check permissions

@@ -22,7 +22,6 @@ class UserManager
     private array $users = [];
     private array $sessions = [];
     private array $roles = [];
-    private array $permissions = [];
     private array $activityLog = [];
     private array $emailQueue = [];
     private bool $emailEnabled = true;
@@ -548,15 +547,14 @@ class UserManager
 
     private function initializeDefaultPermissions(): void
     {
-        $this->permissions = [
-            'user_create' => 'Create new users',
-            'user_read' => 'View user information',
-            'user_update' => 'Update user information',
-            'user_delete' => 'Delete users',
-            'admin_panel' => 'Access admin panel',
-            'moderate_content' => 'Moderate user content',
-            'profile_update' => 'Update own profile'
-        ];
+        // Available permissions for reference
+        // 'user_create' => 'Create new users',
+        // 'user_read' => 'View user information',  
+        // 'user_update' => 'Update user information',
+        // 'user_delete' => 'Delete users',
+        // 'admin_panel' => 'Access admin panel',
+        // 'moderate_content' => 'Moderate user content',
+        // 'profile_update' => 'Update own profile'
     }
 
     // Configuration methods
