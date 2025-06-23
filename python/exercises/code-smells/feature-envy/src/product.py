@@ -9,7 +9,7 @@ class Product:
     category: str
     weight: float
     fragile: bool = False
-    manufacturer: str = ''
+    manufacturer: str = ""
 
     def get_id(self) -> str:
         return self.id

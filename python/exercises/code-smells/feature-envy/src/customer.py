@@ -8,8 +8,8 @@ class Customer:
     email: str
     type: str
     loyalty_years: int
-    address: str = ''
-    phone_number: str = ''
+    address: str = ""
+    phone_number: str = ""
 
     def get_id(self) -> str:
         return self.id

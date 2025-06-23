@@ -18,8 +18,10 @@ class Order:
     items: List[OrderItem]
     shipping_address: str
     express: bool = False
-    status: str = field(default='pending', init=False)
-    order_date: str = field(default_factory=lambda: datetime.now().isoformat(), init=False)
+    status: str = field(default="pending", init=False)
+    order_date: str = field(
+        default_factory=lambda: datetime.now().isoformat(), init=False
+    )
 
     def get_id(self) -> str:
         return self.id

@@ -172,7 +172,12 @@ class EventManager:
         return event
 
     def update_event_timing(
-        self, event_id: str, date: str, start_time: str, end_time: str, timezone_str: str
+        self,
+        event_id: str,
+        date: str,
+        start_time: str,
+        end_time: str,
+        timezone_str: str,
     ) -> bool:
         """Updates event timing information"""
 
