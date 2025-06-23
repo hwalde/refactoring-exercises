@@ -289,8 +289,8 @@ function Start-Setup {
     Write-Host "     - PyCharm: File → Open → refactoring-exercises\python\"
     Write-Host ""
     Write-Host "  2. Tests ausführen:" -ForegroundColor Blue
-    Write-Host "     - PHP: cd php && vendor\bin\phpunit.bat"
-    Write-Host "     - TypeScript: cd typescript && npm test"
+    Write-Host "     - PHP: cd php; vendor\bin\phpunit.bat"
+    Write-Host "     - TypeScript: cd typescript; npm test"
     Write-Host "     - Python: cd python; venv\Scripts\Activate.ps1; pytest exercises\"
     Write-Host ""
     Write-Host "  3. Erste Aufgabe starten:" -ForegroundColor Blue
