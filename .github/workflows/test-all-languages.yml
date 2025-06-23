@@ -52,7 +52,7 @@ jobs:
       working-directory: ./php
       
     - name: Check PHP-CS-Fixer (dry run)
-      run: vendor/bin/php-cs-fixer fix --dry-run --diff
+      run: PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix --dry-run --diff
       working-directory: ./php
 
   typescript-tests:
@@ -292,7 +292,9 @@ jobs:
         echo "🇩🇪 Checking German language in task descriptions..."
         
         # Check for German terms in task.md files
-        if find . -name "task.md" -exec grep -l "Aufgabenstellung\|Was zu tun ist\|Akzeptanzkriterien" {} \; | wc -l | grep -q "3"; then
+        german_files=$(find . -name "task.md" -exec grep -l "Aufgabenstellung\|Was zu tun ist\|Akzeptanzkriterien" {} \; | wc -l)
+        echo "Found $german_files task.md files with German content"
+        if [ "$german_files" -ge 3 ]; then
           echo "✅ German language found in task descriptions"
         else
           echo "❌ German language missing in some task descriptions"

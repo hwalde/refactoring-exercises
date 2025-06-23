@@ -291,7 +291,7 @@ function Start-Setup {
     Write-Host "  2. Tests ausführen:" -ForegroundColor Blue
     Write-Host "     - PHP: cd php && vendor\bin\phpunit.bat"
     Write-Host "     - TypeScript: cd typescript && npm test"
-    Write-Host "     - Python: cd python && venv\Scripts\Activate.ps1 && pytest exercises\"
+    Write-Host "     - Python: cd python; venv\Scripts\Activate.ps1; pytest exercises\"
     Write-Host ""
     Write-Host "  3. Erste Aufgabe starten:" -ForegroundColor Blue
     Write-Host "     - Öffnen Sie exercises\CodeSmells\LongMethod\task.md (PHP)"
