@@ -28,7 +28,28 @@ exercises/<kategorie>/<slug>/
 
 ## Schritt-für-Schritt Anleitung
 
-### 1. Slug festlegen
+### 1. Kategorie und Slug festlegen
+
+**Schritt 1a: Kategorie bestimmen**
+
+Bestimme zunächst die passende Kategorie für deine Aufgabe:
+
+- **CodeSmells** (code-smells): Problematische Code-Patterns identifizieren und beheben
+  - Beispiele: `long-method`, `feature-envy`, `data-clumps`, `large-class`
+- **BasicRefactorings** (basic-refactorings): Grundlegende Refactoring-Techniken
+  - Beispiele: `extract-method`, `extract-variable`, `inline-method`, `rename-method`
+- **CleanCode** (clean-code): Clean Code Prinzipien anwenden
+  - Beispiele: `srp-violation`, `dry-principle`, `magic-numbers`, `meaningful-names`
+- **DomainDriven** (domain-driven): Domain-Driven Design Patterns
+  - Beispiele: `anemic-model`, `repository-pattern`, `value-objects`, `factory-pattern`
+- **LegacyModernization** (legacy-modernization): Legacy Code modernisieren
+  - Beispiele: `legacy-refactoring`, `dependency-injection`, `test-introduction`
+
+**Neue Kategorie erstellen?** Falls keine Kategorie passt, erstelle eine neue:
+- **Format**: PascalCase für PHP, kebab-case für TypeScript/Python
+- **Beispiel**: `PerformanceOptimization` (PHP) / `performance-optimization` (TS/Python)
+
+**Schritt 1b: Slug festlegen**
 
 **Format**: `kebab-case` ohne Nummern
 **Beispiele**: 
@@ -41,14 +62,19 @@ exercises/<kategorie>/<slug>/
 ```bash
 # WICHTIG: Vom refactoring-exercises/ Hauptordner ausführen!
 
-# PHP (CamelCase Konvention)
-mkdir -p php/exercises/CodeSmells/<PascalCaseSlug>/{hints,solution}
+# PHP (PascalCase Konvention)
+mkdir -p php/exercises/<PascalCaseKategorie>/<PascalCaseSlug>/{hints,solution}
 
 # TypeScript (kebab-case Konvention)  
-mkdir -p typescript/exercises/code-smells/<slug>/{src,tests,hints,solution}
+mkdir -p typescript/exercises/<kategorie>/<slug>/{src,tests,hints,solution}
 
 # Python (kebab-case Konvention)
-mkdir -p python/exercises/code-smells/<slug>/{src,tests,hints,solution}
+mkdir -p python/exercises/<kategorie>/<slug>/{src,tests,hints,solution}
+
+# Beispiel für CodeSmells/Long Method:
+# mkdir -p php/exercises/CodeSmells/LongMethod/{hints,solution}
+# mkdir -p typescript/exercises/code-smells/long-method/{src,tests,hints,solution}
+# mkdir -p python/exercises/code-smells/long-method/{src,tests,hints,solution}
 ```
 
 **📁 Wichtige Unterschiede:**
