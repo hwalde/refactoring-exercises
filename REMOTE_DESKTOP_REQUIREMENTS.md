@@ -19,10 +19,10 @@ Anforderungen für Windows 11 Remote Desktop Schulungsinstanzen.
 
 ### 1. Entwicklungs-Runtimes
 
-#### PHP 8.2+
+#### PHP 8.3
 - **Installation**: Über Laragon (empfohlen) oder XAMPP
 - **Laragon Download**: https://laragon.org/download/
-- **Features**: Apache, MySQL, PHP 8.2+, Composer integriert
+- **Features**: Apache, MySQL, PHP 8.3, Composer integriert
 - **Alternative**: Standalone PHP von php.net
 
 #### Node.js 20 LTS

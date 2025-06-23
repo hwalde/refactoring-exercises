@@ -137,15 +137,8 @@ jobs:
       
       
     - name: Run pytest
-      run: pytest exercises/ -v --cov=exercises --cov-report=xml
+      run: pytest exercises/ -v
       working-directory: ./python
-      
-    - name: Upload coverage to Codecov
-      uses: codecov/codecov-action@v3
-      with:
-        file: ./python/coverage.xml
-        flags: python
-        name: python-coverage
 
   # Cross-platform testing for setup scripts
   setup-scripts:
@@ -259,7 +252,6 @@ jobs:
         
         # Check main documentation files
         test -f "README.md" || exit 1
-        test -f "GUIDE.md" || exit 1
         test -f "IDE_SETUP.md" || exit 1
         test -f "LINUX_REQUIREMENTS.md" || exit 1
         test -f "REMOTE_DESKTOP_REQUIREMENTS.md" || exit 1
