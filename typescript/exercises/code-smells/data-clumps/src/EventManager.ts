@@ -474,7 +474,7 @@ export class EventManager {
     // Simple timezone conversion using hardcoded offsets for test compatibility
     // In a real implementation, you would use a proper timezone library like date-fns-tz
     const timezoneOffsets: { [key: string]: number } = {
-      'UTC': 0,
+      UTC: 0,
       'Europe/Berlin': 2, // Summer time (CEST)
       'America/New_York': -4, // Summer time (EDT)
       'Asia/Tokyo': 9,
@@ -487,11 +487,11 @@ export class EventManager {
 
     // Parse the input time
     const [hours, minutes, seconds] = time.split(':').map(Number);
-    
+
     // Convert to target timezone
     const targetHours = hours! + hourDifference;
     const adjustedHours = ((targetHours % 24) + 24) % 24; // Handle negative and > 24 hours
-    
+
     const timePart = `${adjustedHours.toString().padStart(2, '0')}:${minutes!.toString().padStart(2, '0')}:${seconds!.toString().padStart(2, '0')}`;
     const datePart = date; // Simplified - not handling date changes
 

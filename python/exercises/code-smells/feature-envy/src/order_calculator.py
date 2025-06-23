@@ -6,10 +6,10 @@ from other objects (Order, Customer, Product) more than their own data.
 The business logic should be moved closer to the data it operates on.
 """
 
-from typing import Dict, Any
-from customer import Customer
-from product import Product
+from typing import Any
+
 from order import Order
+from product import Product
 
 
 class OrderCalculator:
@@ -185,7 +185,7 @@ class OrderCalculator:
 
         return round(total_shipping_cost, 2)
 
-    def calculate_total(self, order: Order) -> Dict[str, Any]:
+    def calculate_total(self, order: Order) -> dict[str, Any]:
         """
         Main calculation method - coordinates other calculations
         This method should remain in OrderCalculator as it coordinates everything

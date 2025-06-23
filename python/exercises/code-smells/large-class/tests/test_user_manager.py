@@ -354,9 +354,7 @@ class TestUserManager:
         user1 = self.user_manager.create_user(
             "user1", "user1@example.com", "Password123"
         )
-        user2 = self.user_manager.create_user(
-            "user2", "user2@example.com", "Password123"
-        )
+        self.user_manager.create_user("user2", "user2@example.com", "Password123")
 
         user1_log = self.user_manager.get_user_activity_log(user1.id)
 

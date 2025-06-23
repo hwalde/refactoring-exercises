@@ -6,10 +6,10 @@ import pytest
 # Add the src directory to Python path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from order_calculator import OrderCalculator
 from customer import Customer
-from product import Product
 from order import Order, OrderItem
+from order_calculator import OrderCalculator
+from product import Product
 
 
 class TestOrderCalculator:

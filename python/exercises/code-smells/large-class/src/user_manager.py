@@ -10,11 +10,10 @@ This class demonstrates the "Large Class" code smell by having too many responsi
 """
 
 import re
-import hashlib
 import uuid
-from datetime import datetime, timedelta
-from typing import Dict, List, Optional, Any
 from dataclasses import dataclass, field
+from datetime import datetime, timedelta
+from typing import Any
 
 
 @dataclass
@@ -23,14 +22,14 @@ class User:
     username: str
     email: str
     password: str
-    roles: List[str]
+    roles: list[str]
     created_at: str
     updated_at: str
-    last_login: Optional[str]
+    last_login: str | None
     login_count: int
     status: str
     email_verified: bool
-    profile: Dict[str, str] = field(
+    profile: dict[str, str] = field(
         default_factory=lambda: {
             "first_name": "",
             "last_name": "",
@@ -53,7 +52,7 @@ class Session:
 @dataclass
 class Role:
     name: str
-    permissions: List[str]
+    permissions: list[str]
 
 
 @dataclass
@@ -75,12 +74,12 @@ class EmailItem:
 
 class UserManager:
     def __init__(self):
-        self.users: Dict[str, User] = {}
-        self.sessions: Dict[str, Session] = {}
-        self.roles: Dict[str, Role] = {}
-        self.permissions: Dict[str, str] = {}
-        self.activity_log: List[ActivityLog] = []
-        self.email_queue: List[EmailItem] = []
+        self.users: dict[str, User] = {}
+        self.sessions: dict[str, Session] = {}
+        self.roles: dict[str, Role] = {}
+        self.permissions: dict[str, str] = {}
+        self.activity_log: list[ActivityLog] = []
+        self.email_queue: list[EmailItem] = []
         self.email_enabled: bool = True
         self.logging_enabled: bool = True
 
@@ -90,7 +89,7 @@ class UserManager:
     # ==== USER MANAGEMENT ====
 
     def create_user(
-        self, username: str, email: str, password: str, roles: List[str] = None
+        self, username: str, email: str, password: str, roles: list[str] = None
     ) -> User:
         """Creates a new user with validation and email notification"""
         if roles is None:
@@ -155,7 +154,7 @@ class UserManager:
 
         return user
 
-    def update_user(self, user_id: str, data: Dict[str, Any]) -> User:
+    def update_user(self, user_id: str, data: dict[str, Any]) -> User:
         """Updates user information with validation"""
         user = self.get_user_by_id(user_id)
         if user is None:
@@ -296,7 +295,7 @@ class UserManager:
 
         return session
 
-    def validate_session(self, token: str) -> Optional[User]:
+    def validate_session(self, token: str) -> User | None:
         """Validates session token and returns user data"""
         if token not in self.sessions:
             return None
@@ -448,31 +447,31 @@ class UserManager:
             )
         )
 
-    def get_user_activity_log(self, user_id: str) -> List[ActivityLog]:
+    def get_user_activity_log(self, user_id: str) -> list[ActivityLog]:
         """Gets activity log for specific user"""
         return [log for log in self.activity_log if log.user_id == user_id]
 
     # ==== HELPER METHODS ====
 
-    def get_user_by_id(self, user_id: str) -> Optional[User]:
+    def get_user_by_id(self, user_id: str) -> User | None:
         """Gets user by ID"""
         return self.users.get(user_id)
 
-    def get_user_by_username(self, username: str) -> Optional[User]:
+    def get_user_by_username(self, username: str) -> User | None:
         """Gets user by username"""
         for user in self.users.values():
             if user.username == username:
                 return user
         return None
 
-    def get_user_by_email(self, email: str) -> Optional[User]:
+    def get_user_by_email(self, email: str) -> User | None:
         """Gets user by email"""
         for user in self.users.values():
             if user.email == email:
                 return user
         return None
 
-    def get_all_users(self) -> List[User]:
+    def get_all_users(self) -> list[User]:
         """Gets all users"""
         return list(self.users.values())
 
@@ -548,10 +547,10 @@ class UserManager:
         """Sets logging enabled state"""
         self.logging_enabled = enabled
 
-    def get_email_queue(self) -> List[EmailItem]:
+    def get_email_queue(self) -> list[EmailItem]:
         """Gets email queue"""
         return self.email_queue
 
-    def get_activity_log(self) -> List[ActivityLog]:
+    def get_activity_log(self) -> list[ActivityLog]:
         """Gets activity log"""
         return self.activity_log

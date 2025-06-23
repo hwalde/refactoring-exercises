@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import List, Dict, Any
+
 from customer import Customer
 from product import Product
 
@@ -15,7 +15,7 @@ class OrderItem:
 class Order:
     id: str
     customer: Customer
-    items: List[OrderItem]
+    items: list[OrderItem]
     shipping_address: str
     express: bool = False
     status: str = field(default="pending", init=False)
@@ -29,7 +29,7 @@ class Order:
     def get_customer(self) -> Customer:
         return self.customer
 
-    def get_items(self) -> List[OrderItem]:
+    def get_items(self) -> list[OrderItem]:
         return self.items
 
     def get_status(self) -> str:
