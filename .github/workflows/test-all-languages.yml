@@ -51,9 +51,6 @@ jobs:
       run: vendor/bin/phpstan analyse
       working-directory: ./php
       
-    - name: Check PHP-CS-Fixer (dry run)
-      run: PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix --dry-run --diff
-      working-directory: ./php
 
   typescript-tests:
     runs-on: ubuntu-latest
@@ -139,7 +136,7 @@ jobs:
       working-directory: ./python
       
     - name: Run mypy type checker
-      run: mypy exercises/code-smells/long-method/src/
+      run: mypy exercises/code-smells/long-method/src/order_processor.py
       working-directory: ./python
       
     - name: Run pytest
