@@ -2,6 +2,22 @@
 
 Dieser Guide erklärt, wie neue Refactoring-Aufgaben in den Projekten erstellt werden.
 
+## ⚠️ WICHTIGER HINWEIS: Git-Befehle
+
+**ALLE Git-Befehle in diesem Guide müssen im `refactoring-exercises/` Verzeichnis ausgeführt werden!**
+
+Das Root-Verzeichnis des Projekts enthält ein separates Git-Repository. Stellen Sie sicher, dass Sie sich im richtigen Verzeichnis befinden:
+
+```bash
+# Korrekt - im refactoring-exercises Verzeichnis
+cd /pfad/zum/projekt/refactoring-exercises
+git status  # Zeigt den Status des refactoring-exercises Repos
+
+# FALSCH - im Root-Verzeichnis
+cd /pfad/zum/projekt
+git status  # Zeigt den Status eines anderen Repos!
+```
+
 ## Übersicht
 
 Jede Aufgabe existiert in allen drei Sprachen (PHP, TypeScript, Python) mit identischer fachlicher Logik aber sprachspezifischen Best Practices.
@@ -28,9 +44,44 @@ exercises/<kategorie>/<slug>/
 
 ## Schritt-für-Schritt Anleitung
 
-### 1. Kategorie und Slug festlegen
+### 1. Thema der Übungsaufgabe festlegen
 
-**Schritt 1a: Kategorie bestimmen**
+**Schritt 1a: USED_EXERCISE_TOPICS.md lesen**
+
+Vor der Kategorie- und Slug-Bestimmung muss zunächst das fachliche Thema der Übungsaufgabe festgelegt werden. Lese die Datei `USED_EXERCISE_TOPICS.md`, um zu sehen, welche Themen bereits verwendet wurden.
+
+**Schritt 1b: Thema bestimmen**
+
+Das Thema beschreibt die fachliche Domäne der zu refactorierenden Klasse aus geschäftlicher Sicht. Beispiele für Themen:
+- **UserController** - Benutzer-Verwaltung
+- **OrderManager** - Bestellungsverarbeitung
+- **OrderProcessor** - Bestellungsabwicklung
+- **MeetingService** - Terminverwaltung
+- **NewsRestController** - Nachrichten-API
+- **NewsView** - Nachrichten-Anzeige
+- **PaymentProcessor** - Zahlungsabwicklung
+- **InventoryManager** - Lagerverwaltung
+- **InvoiceGenerator** - Rechnungserstellung
+- **EmailService** - E-Mail-Versendung
+
+**WICHTIG**: Wähle ein Thema, das:
+- Noch NICHT in `USED_EXERCISE_TOPICS.md` aufgeführt ist
+- Realistische Geschäftslogik repräsentiert
+- Für die geplante Refactoring-Aufgabe geeignet ist
+
+**Schritt 1c: Thema in USED_EXERCISE_TOPICS.md eintragen**
+
+Sobald das Thema gewählt wurde, muss es sofort in die `USED_EXERCISE_TOPICS.md` Datei eingetragen werden, um Dopplungen zu vermeiden. Füge das Thema in der Liste hinzu mit einem Hinweis auf die geplante Aufgabe.
+
+**Schritt 1d: Thema-Konflikt-Behandlung**
+
+Falls in den Exercise-Details bereits ein spezifisches Thema erwähnt wird:
+- **Verfügbar**: Verwende das erwähnte Thema, wenn es noch nicht in `USED_EXERCISE_TOPICS.md` steht
+- **Bereits verwendet**: Wähle ein neues, unbenutztes Thema aus der obigen Liste oder erfinde ein neues
+
+### 2. Kategorie und Slug festlegen
+
+**Schritt 2a: Kategorie bestimmen**
 
 Bestimme zunächst die passende Kategorie für deine Aufgabe:
 
@@ -49,7 +100,7 @@ Bestimme zunächst die passende Kategorie für deine Aufgabe:
 - **Format**: PascalCase für PHP, kebab-case für TypeScript/Python
 - **Beispiel**: `PerformanceOptimization` (PHP) / `performance-optimization` (TS/Python)
 
-**Schritt 1b: Slug festlegen**
+**Schritt 2b: Slug festlegen**
 
 **Format**: `kebab-case` ohne Nummern
 **Beispiele**: 
@@ -57,7 +108,7 @@ Bestimme zunächst die passende Kategorie für deine Aufgabe:
 - `extract-variable`, `inline-method` (Basic Refactorings)
 - `srp-violation`, `dry-principle` (Clean Code)
 
-### 2. Ordnerstruktur erstellen
+### 3. Ordnerstruktur erstellen
 
 ```bash
 # WICHTIG: Vom refactoring-exercises/ Hauptordner ausführen!
@@ -77,20 +128,31 @@ mkdir -p python/exercises/<kategorie>/<slug>/{src,tests,hints,solution}
 # mkdir -p python/exercises/code-smells/long-method/{src,tests,hints,solution}
 ```
 
+**🐍 Python-spezifische __init__.py Files erstellen:**
+```bash
+# NACH der Ordnererstellung für Python immer ausführen:
+touch python/exercises/<kategorie>/<slug>/src/__init__.py
+touch python/exercises/<kategorie>/<slug>/tests/__init__.py
+
+# Beispiel:
+# touch python/exercises/code-smells/long-method/src/__init__.py
+# touch python/exercises/code-smells/long-method/tests/__init__.py
+```
+
 **📁 Wichtige Unterschiede:**
 - **PHP**: Direkte Dateien im Exercise-Ordner, PascalCase-Pfade
 - **TypeScript/Python**: Separate `src/` und `tests/` Unterordner, kebab-case-Pfade
 
-### 3. Aufgabenkonzept entwickeln und absegnen
+### 4. Aufgabenkonzept entwickeln und absegnen
 
 **🚨 WICHTIG - Qualitätssicherung:**
 
-**Schritt 3a: Konzept-Dialog**
+**Schritt 4a: Konzept-Dialog**
 1. **Aufgabe besprechen**: Idee, Ziel und Lerninhalt im Dialog erklären
 2. **Fachliche Validierung**: Sicherstellen dass das Problem realistisch und lehrreich ist
 3. **Scope definieren**: Umfang und Schwierigkeit festlegen
 
-**Schritt 3b: Aufgabentext-Entwurf**
+**Schritt 4b: Aufgabentext-Entwurf**
 1. **Ersten Entwurf erstellen**: task.md mit allen Abschnitten verfassen
 2. **Präsentation**: Vollständigen Text zur Begutachtung vorlegen
 3. **Zustimmung einholen**: ✅ **NUR mit expliziter Zustimmung fortfahren!**
@@ -98,7 +160,7 @@ mkdir -p python/exercises/<kategorie>/<slug>/{src,tests,hints,solution}
 
 **❌ Ohne Zustimmung des Aufgabentexts NICHT mit der Implementierung beginnen!**
 
-### 4. task.md erstellen
+### 5. task.md erstellen
 
 **YAML-Frontmatter** (identisch in allen Sprachen):
 ```yaml
@@ -123,7 +185,7 @@ prerequisites: []  # Array von Slug-Namen
 
 **🇩🇪 WICHTIG - Sprache**: Alle Aufgabenbeschreibungen, Hinweise und Texte die Studenten lesen müssen auf Deutsch sein! Nur Quellcode, technische Fachbegriffe (wie "Long Method", "Extract Method") und Variablennamen bleiben auf Englisch.
 
-### 5. Problem-Code erstellen
+### 6. Problem-Code erstellen
 
 **Richtlinien**:
 - **Realistisch**: Keine Toy-Examples, sondern realistische Geschäftslogik
@@ -150,8 +212,19 @@ prerequisites: []  # Array von Slug-Namen
 - Dataclasses für strukturierte Daten
 - PEP 8 compliant
 - Docstrings für Klassen/Methoden
+- **WICHTIG**: `__init__.py` Files in `src/` und `tests/` Ordnern erstellen
+- **WICHTIG**: Korrekte Import-Struktur in Tests verwenden:
+  ```python
+  import sys
+  from pathlib import Path
+  
+  # Add the src directory to Python path
+  sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
+  
+  from your_module import YourClass
+  ```
 
-### 6. Tests schreiben
+### 7. Tests schreiben
 
 **Wichtige Prinzipien**:
 - Tests definieren das erwartete Verhalten
@@ -165,7 +238,7 @@ prerequisites: []  # Array von Slug-Namen
 - **Error Cases**: Fehlerbehandlung
 - **Integration**: Zusammenspiel der Komponenten
 
-### 7. Hints erstellen
+### 8. Hints erstellen
 
 **Gestaffeltes System**:
 - **hint-1.md**: Problem analysieren, Blöcke identifizieren
@@ -188,7 +261,7 @@ Konkreter nächster Schritt
 Was danach zu tun ist
 ```
 
-### 8. README.md erstellen
+### 9. README.md erstellen
 
 **Template** (für jede Sprache anpassen):
 ```markdown
@@ -228,7 +301,7 @@ Was danach zu tun ist
 - Schrittweise Hinweise: `hints/`
 ```
 
-### 9. Aufgabe testen und validieren
+### 10. Aufgabe testen und validieren
 
 **WICHTIG**: Jede neue Aufgabe MUSS in allen drei Sprachen getestet werden, bevor sie als fertig gilt!
 
@@ -307,18 +380,19 @@ Siehe `exercises/code-smells/long-method/` in allen drei Sprachen als Referenz-I
 ## 🔄 Workflow für neue Aufgaben
 
 ### 1. Vorbereitung und Setup
-1. **Slug festlegen** (kebab-case, z.B. `long-method`)
-2. **Ordnerstruktur anlegen** (siehe Abschnitt 2 - beachte Unterschiede zwischen Sprachen!)
-3. **task.md mit Frontmatter erstellen** (in allen drei Sprachen identisch)
+1. **Thema festlegen** (siehe Abschnitt 1 - USED_EXERCISE_TOPICS.md lesen und neues Thema wählen)
+2. **Kategorie und Slug festlegen** (kebab-case, z.B. `long-method`)
+3. **Ordnerstruktur anlegen** (siehe Abschnitt 3 - beachte Unterschiede zwischen Sprachen!)
+4. **task.md mit Frontmatter erstellen** (in allen drei Sprachen identisch)
 
 ### 2. Code und Tests implementieren
-4. **Problem-Code implementieren** (in allen drei Sprachen, identische Geschäftslogik)
-5. **Tests schreiben** (müssen vor und nach Refactoring grün sein)
-6. **README.md und Hints erstellen**
+5. **Problem-Code implementieren** (in allen drei Sprachen, identische Geschäftslogik)
+6. **Tests schreiben** (müssen vor und nach Refactoring grün sein)
+7. **README.md und Hints erstellen**
 
 ### 3. **🚨 OBLIGATORISCHE Validierung Original-Aufgaben**
-7. **Alle Test-Kommandos ausführen** (siehe Abschnitt "Aufgabe testen und validieren")
-8. **Code-Style prüfen** (alle Linter müssen grün sein)
+8. **Alle Test-Kommandos ausführen** (siehe Abschnitt "Aufgabe testen und validieren")
+9. **Code-Style prüfen** (alle Linter müssen grün sein)
 **❌ Ohne erfolgreiche Tests in allen drei Sprachen ist die Aufgabe NICHT fertig!**
 
 ### 4. **Musterlösungen erstellen und testen**
@@ -378,7 +452,13 @@ Siehe `exercises/code-smells/long-method/` in allen drei Sprachen als Referenz-I
 - [ ] **Ready für Commit**: Alle Kriterien erfüllt
 
 ### 7. Git Commit und Push
+
+⚠️ **WICHTIG**: Alle folgenden Git-Befehle müssen im `refactoring-exercises/` Verzeichnis ausgeführt werden!
+
 ```bash
+# WICHTIG: Zuerst ins richtige Verzeichnis wechseln!
+cd /pfad/zum/projekt/refactoring-exercises
+
 # 1. Sicherstellen dass main branch aktiv ist
 git branch --show-current  # Sollte "main" anzeigen
 git checkout main          # Falls nötig
