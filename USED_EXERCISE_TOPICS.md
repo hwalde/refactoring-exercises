@@ -12,6 +12,7 @@ This file tracks topics that have been used in refactoring exercises to prevent 
 - OrderProcessor
 - UserManager
 - OrderCalculator
+- EventManager
 
 ---
 
