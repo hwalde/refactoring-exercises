@@ -67,10 +67,6 @@ __pycache__/
 # composer.lock
 # poetry.lock
 
-# Solutions (exclude from public repository)
-**/solution/
-**/solutions/
-
 # Solution test symlinks (local development only)
 # **/solution/*Test.php
 # **/solution/*.test.ts  

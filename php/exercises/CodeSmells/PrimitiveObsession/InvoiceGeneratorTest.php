@@ -114,6 +114,7 @@ class InvoiceGeneratorTest extends TestCase
         $this->invoiceGenerator->updateInvoiceStatus($invoice['id'], 'sent');
         $updatedInvoice = $this->invoiceGenerator->getInvoice($invoice['id']);
 
+        $this->assertNotNull($updatedInvoice);
         $this->assertSame('sent', $updatedInvoice['status']);
     }
 
@@ -224,6 +225,7 @@ class InvoiceGeneratorTest extends TestCase
         $this->invoiceGenerator->addDiscountToInvoice($invoice['id'], 10.0);
         $updatedInvoice = $this->invoiceGenerator->getInvoice($invoice['id']);
 
+        $this->assertNotNull($updatedInvoice);
         $this->assertSame(90.0, $updatedInvoice['totalAmount']);
         $this->assertSame(10.0, $updatedInvoice['discountPercentage']);
     }
@@ -260,6 +262,7 @@ class InvoiceGeneratorTest extends TestCase
         $updatedInvoice = $this->invoiceGenerator->getInvoice($invoice['id']);
 
         $this->assertTrue($result);
+        $this->assertNotNull($updatedInvoice);
         $this->assertSame('sent', $updatedInvoice['status']);
         $this->assertSame('sender@company.com', $updatedInvoice['sentFrom']);
         $this->assertArrayHasKey('sentAt', $updatedInvoice);
