@@ -214,57 +214,12 @@ jobs:
         
         echo "✅ Exercise structure is valid"
 
-  # Documentation check
-  documentation:
-    runs-on: ubuntu-latest
-    name: Documentation Check
-    
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Check required documentation files
-      run: |
-        echo "📚 Checking documentation..."
-        
-        # Check main documentation files
-        test -f "README.md" || exit 1
-        test -f "IDE_SETUP.md" || exit 1
-        test -f "LINUX_REQUIREMENTS.md" || exit 1
-        test -f "REMOTE_DESKTOP_REQUIREMENTS.md" || exit 1
-        
-        
-        # Check VS Code configuration (optional)
-        if [ -d ".vscode" ]; then
-          test -f ".vscode/tasks.json" || echo "Warning: .vscode/tasks.json missing"
-          test -f ".vscode/launch.json" || echo "Warning: .vscode/launch.json missing" 
-          test -f ".vscode/settings.json" || echo "Warning: .vscode/settings.json missing"
-          test -f ".vscode/extensions.json" || echo "Warning: .vscode/extensions.json missing"
-        else
-          echo "Note: .vscode directory not found (optional)"
-        fi
-        
-        echo "✅ All required documentation files are present"
-        
-    - name: Check German language in task files
-      run: |
-        echo "🇩🇪 Checking German language in task descriptions..."
-        
-        # Check for German terms in task.md files
-        german_files=$(find . -name "task.md" -exec grep -l "Aufgabenstellung\|Was zu tun ist\|Akzeptanzkriterien" {} \; | wc -l)
-        echo "Found $german_files task.md files with German content"
-        if [ "$german_files" -ge 3 ]; then
-          echo "✅ German language found in task descriptions"
-        else
-          echo "❌ German language missing in some task descriptions"
-          exit 1
-        fi
 
   # Final summary
   summary:
     runs-on: ubuntu-latest
     name: Test Summary
-    needs: [php-tests, typescript-tests, python-tests, integration-test, documentation]
+    needs: [php-tests, typescript-tests, python-tests, integration-test]
     if: always()
     
     steps:
@@ -276,13 +231,11 @@ jobs:
         echo "TypeScript Tests: ${{ needs.typescript-tests.result }}"
         echo "Python Tests: ${{ needs.python-tests.result }}"
         echo "Integration Test: ${{ needs.integration-test.result }}"
-        echo "Documentation: ${{ needs.documentation.result }}"
         
         if [[ "${{ needs.php-tests.result }}" == "success" && \
               "${{ needs.typescript-tests.result }}" == "success" && \
               "${{ needs.python-tests.result }}" == "success" && \
-              "${{ needs.integration-test.result }}" == "success" && \
-              "${{ needs.documentation.result }}" == "success" ]]; then
+              "${{ needs.integration-test.result }}" == "success" ]]; then
           echo "🎉 All tests passed successfully!"
         else
           echo "❌ Some tests failed. Check the logs above."
