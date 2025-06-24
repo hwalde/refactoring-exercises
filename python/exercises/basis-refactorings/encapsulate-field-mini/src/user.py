@@ -7,7 +7,6 @@ data integrity issues.
 """
 
 
-
 class User:
     """User class for managing user information in the system.
 

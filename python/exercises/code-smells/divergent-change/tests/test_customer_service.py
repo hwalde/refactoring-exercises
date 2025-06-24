@@ -92,7 +92,7 @@ class TestCustomerService:
 
     def test_account_locking_after_failed_attempts(self) -> None:
         """Test account locking after multiple failed login attempts."""
-        customer_id = self.customer_service.register_customer(
+        self.customer_service.register_customer(
             "john.doe@example.com", "password123", "John", "Doe"
         )
 
