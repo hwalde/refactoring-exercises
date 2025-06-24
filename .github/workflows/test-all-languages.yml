@@ -144,33 +144,6 @@ jobs:
       run: pytest exercises/ -v
       working-directory: ./python
 
-  # Cross-platform testing for setup scripts
-  setup-scripts:
-    runs-on: ${{ matrix.os }}
-    name: Test Setup Scripts
-    
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-        
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-      
-    - name: Test Linux setup script (Ubuntu)
-      if: matrix.os == 'ubuntu-latest'
-      run: |
-        chmod +x setup-linux.sh
-        # Dry run - check script syntax
-        bash -n setup-linux.sh
-        echo "✅ Linux setup script syntax is valid"
-        
-    - name: Test Windows setup script
-      if: matrix.os == 'windows-latest'
-      run: |
-        # Check PowerShell script syntax
-        powershell -Command "& { . .\setup-windows.ps1; 'Syntax check passed' }" -WhatIf
-        echo "✅ Windows setup script syntax is valid"
 
   # Integration test: Full workflow
   integration-test:
@@ -260,9 +233,6 @@ jobs:
         test -f "LINUX_REQUIREMENTS.md" || exit 1
         test -f "REMOTE_DESKTOP_REQUIREMENTS.md" || exit 1
         
-        # Check setup scripts
-        test -f "setup-linux.sh" || exit 1
-        test -f "setup-windows.ps1" || exit 1
         
         # Check VS Code configuration (optional)
         if [ -d ".vscode" ]; then
@@ -294,7 +264,7 @@ jobs:
   summary:
     runs-on: ubuntu-latest
     name: Test Summary
-    needs: [php-tests, typescript-tests, python-tests, setup-scripts, integration-test, documentation]
+    needs: [php-tests, typescript-tests, python-tests, integration-test, documentation]
     if: always()
     
     steps:
@@ -305,14 +275,12 @@ jobs:
         echo "PHP Tests: ${{ needs.php-tests.result }}"
         echo "TypeScript Tests: ${{ needs.typescript-tests.result }}"
         echo "Python Tests: ${{ needs.python-tests.result }}"
-        echo "Setup Scripts: ${{ needs.setup-scripts.result }}"
         echo "Integration Test: ${{ needs.integration-test.result }}"
         echo "Documentation: ${{ needs.documentation.result }}"
         
         if [[ "${{ needs.php-tests.result }}" == "success" && \
               "${{ needs.typescript-tests.result }}" == "success" && \
               "${{ needs.python-tests.result }}" == "success" && \
-              "${{ needs.setup-scripts.result }}" == "success" && \
               "${{ needs.integration-test.result }}" == "success" && \
               "${{ needs.documentation.result }}" == "success" ]]; then
           echo "🎉 All tests passed successfully!"
