@@ -5,9 +5,9 @@
 ## Schnellstart
 
 1. **Sprache wählen**: Wechsle in den entsprechenden Ordner
-   - `php/` - PHP 8.2+ Projekte
-   - `typescript/` - TypeScript 5.x Projekte  
-   - `python/` - Python 3.11+ Projekte
+   - `php/` - PHP Projekte
+   - `typescript/` - TypeScript Projekte  
+   - `python/` - Python Projekte
 
 2. **Setup**: Folge der README.md im jeweiligen Sprachordner
 
@@ -37,5 +37,7 @@
 
 ## Anforderungen
 
-- Siehe `LINUX_REQUIREMENTS.md` für Ubuntu 24.04 Setup
-- Siehe `REMOTE_DESKTOP_REQUIREMENTS.md` für Windows 11 Setup
+- Siehe `SETUP_UBUNTU_24_4.md` für Ubuntu 24.04 Setup
+- Siehe `SETUP_WINDOWS_11.md` für Windows 11 Setup
+- Siehe `RUNNING_TESTS_ON_WINDOWS_11.md` für Test-Ausführung unter Windows
+- Siehe `IDE_SETUP.md` für IDE-Konfiguration und Einstellungen

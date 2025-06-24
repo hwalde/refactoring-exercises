@@ -14,48 +14,58 @@ Anforderungen für Windows 11 Remote Desktop Schulungsinstanzen.
 - **OS**: Windows 11 Pro (für RDP-Support)
 - **RDP**: Remote Desktop aktiviert
 - **Updates**: Aktuelle Windows Updates installiert
+- **Git**: Git für Windows (https://git-scm.com/download/win)
 
 ## Benötigte Software-Installation
 
 ### 1. Entwicklungs-Runtimes
 
 #### PHP 8.3
-- **Installation**: Über Laragon (empfohlen) oder XAMPP
-- **Laragon Download**: https://laragon.org/download/
-- **Features**: Apache, MySQL, PHP 8.3, Composer integriert
-- **Alternative**: Standalone PHP von php.net
+- **Download**: https://windows.php.net/download/
+- **Version**: PHP 8.3.*
+- **Installation**: 
+  - ZIP-Datei herunterladen und entpacken (z.B. nach `C:\php`)
+  - PATH-Variable um PHP-Ordner erweitern
+  - `php.ini-development` zu `php.ini` kopieren
+- **Xdebug Extension**: https://xdebug.org/download
+  - Xdebug DLL herunterladen und in `ext/` Ordner kopieren
+  - **Wichtig**: Datei zu `php_xdebug.dll` umbenennen
+  - In `php.ini` hinzufügen: `zend_extension="php_xdebug.dll"`
+  - Coverage aktivieren: `xdebug.mode=coverage`
+- **Composer**: https://getcomposer.org/Composer-Setup.exe herunterladen und ausführen
 
-#### Node.js 20 LTS
+#### Node.js
 - **Download**: https://nodejs.org/en/download/
-- **Version**: 20.x.x LTS
+- **Version**: Aktuelles stable release
 - **Installation**: Windows Installer (.msi)
 - **Pfad**: Automatisch zu PATH hinzugefügt
+- **NPM**: Wird automatisch mit Node.js installiert
 
-#### Python 3.11+
+#### Python 3.12
 - **Download**: https://www.python.org/downloads/windows/
-- **Version**: 3.11+ 
+- **Version**: Python 3.12.*
 - **Installation**: "Add Python to PATH" aktivieren
 - **Alternative**: Microsoft Store Version
 
 ### 2. IDEs und Editoren
 
-#### JetBrains IDEs (Empfohlen)
+#### JetBrains IDEs (Erforderlich)
 ```powershell
 # JetBrains Toolbox herunterladen und installieren
 # Von: https://www.jetbrains.com/toolbox-app/
 
 # Über Toolbox installieren:
-# - PhpStorm (PHP Development)
-# - WebStorm (TypeScript Development)  
-# - PyCharm Professional (Python Development)
+# - PyCharm (Python Development)
+# - WebStorm (TypeScript Development)
+# - PHPStorm (PHP Development)
 ```
 
-#### Visual Studio Code (Alternative)
+#### Visual Studio Code (Erforderlich)
 ```powershell
 # VS Code herunterladen
 # Von: https://code.visualstudio.com/download
 
-# Empfohlene Extensions:
+# Erforderliche Extensions:
 code --install-extension ms-vscode.vscode-typescript-next
 code --install-extension ms-python.python
 code --install-extension bmewburn.vscode-intelephense-client
@@ -94,10 +104,6 @@ if (!(Get-Command choco -ErrorAction SilentlyContinue)) {
 Write-Host "Installing development tools..." -ForegroundColor Yellow
 choco install -y nodejs-lts python3 git vscode
 
-# Laragon für PHP
-Write-Host "Installing Laragon for PHP..." -ForegroundColor Yellow
-choco install -y laragon
-
 # JetBrains Toolbox
 Write-Host "Installing JetBrains Toolbox..." -ForegroundColor Yellow
 choco install -y jetbrainstoolbox
@@ -111,10 +117,11 @@ code --install-extension esbenp.prettier-vscode
 
 Write-Host "=== Installation completed! ===" -ForegroundColor Green
 Write-Host "Next steps:" -ForegroundColor Yellow
-Write-Host "1. Restart system"
-Write-Host "2. Start Laragon and enable Apache/PHP"
+Write-Host "1. Download and setup PHP 8.3 manually"
+Write-Host "2. Install and configure Xdebug extension"
 Write-Host "3. Install JetBrains IDEs via Toolbox"
-Write-Host "4. Run project setup: .\scripts\setup-projects.ps1"
+Write-Host "4. Restart system"
+Write-Host "5. Run project setup: .\scripts\setup-projects.ps1"
 ```
 
 ## Projekt-Konfiguration
@@ -131,7 +138,7 @@ cd refactoring-training\refactoring-exercises
 
 ### 2. Dependencies installieren
 ```powershell
-# PHP Dependencies (Laragon muss laufen)
+# PHP Dependencies
 cd php
 composer install
 cd ..
@@ -316,16 +323,21 @@ Get-Counter -Counter $counters -Continuous -SampleInterval 30 | Export-Counter -
 
 ### Häufige Probleme
 
-#### PHP/Laragon
+#### PHP
 ```powershell
-# Laragon startet nicht
-# 1. Als Administrator ausführen
-# 2. Port 80/443 Konflikte prüfen
-netstat -ano | findstr :80
+# PHP nicht im PATH
+# PATH-Variable prüfen und PHP-Ordner hinzufügen
+$env:PATH += ";C:\php"
 
-# Apache startet nicht
-# IIS deaktivieren falls installiert
-dism /online /disable-feature /featurename:IIS-WebServerRole
+# Xdebug lädt nicht
+# 1. Prüfen ob php_xdebug.dll im ext/ Ordner ist
+# 2. php.ini Einträge prüfen:
+#    zend_extension="php_xdebug.dll"
+#    xdebug.mode=coverage
+
+# PHP Version prüfen
+php --version
+php -m | findstr xdebug
 ```
 
 #### Node.js/NPM
