@@ -36,11 +36,13 @@ class PodcastManagerTest(unittest.TestCase):
         """Execute a podcast manager command and return results."""
         full_command = f"{sys.executable} podcast_manager.py {command}"
         result = subprocess.run(
-            full_command, shell=True, capture_output=True, text=True, encoding="utf-8"
+            full_command, shell=True, capture_output=True, text=True, encoding="utf-8", errors="replace"
         )
 
         # Combine stdout and stderr for output, as some messages may go to stderr
-        combined_output = result.stdout + result.stderr
+        stdout_text = result.stdout if result.stdout is not None else ""
+        stderr_text = result.stderr if result.stderr is not None else ""
+        combined_output = stdout_text + stderr_text
 
         return {
             "output": combined_output,

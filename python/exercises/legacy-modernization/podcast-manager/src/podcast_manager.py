@@ -13,6 +13,7 @@ import xml.etree.ElementTree as ET
 import time
 from datetime import datetime
 from typing import Dict, List, Any, Optional
+import io
 
 # Globale Variable für die "Datenbank". Super praktisch.
 DB_FILE = "podcasts_db.json"
@@ -260,6 +261,10 @@ class PodcastThing:
 
 def main() -> None:
     """Hauptlogik des Skripts, direkt im globalen Scope. Keine Funktionen, keine Struktur."""
+    # Ensure stdout and stderr use UTF-8 encoding
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
+
     args = sys.argv[1:]  # Direkter Zugriff auf sys.argv
 
     # Globale Instanz der God-Class
