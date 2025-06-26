@@ -1,0 +1,11 @@
+{
+    "podcasts": [
+        {
+            "id": 1,
+            "title": "Test Podcast Verifikation",
+            "url": "file:\/\/\/home\/herbe\/projects\/refactoring-training\/refactoring-exercises\/php\/exercises\/LegacyModernization\/PodcastManager\/test_feed.xml",
+            "tags": []
+        }
+    ],
+    "episodes": []
+}

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+    <channel>
+        <title>Test Podcast</title>
+        <description>A test podcast for demonstration</description>
+        <link>https://example.com</link>
+        <language>de-DE</language>
+        
+        <item>
+            <title>Episode 1</title>
+            <description>First episode description</description>
+            <pubDate>Mon, 01 Jan 2024 12:00:00 GMT</pubDate>
+            <enclosure url="https://example.com/episode1.mp3" type="audio/mpeg" length="1000"/>
+            <guid>episode1</guid>
+        </item>
+        
+        <item>
+            <title>Episode 2</title>
+            <description>Second episode description</description>
+            <pubDate>Mon, 08 Jan 2024 12:00:00 GMT</pubDate>
+            <enclosure url="https://example.com/episode2.mp3" type="audio/mpeg" length="2000"/>
+            <guid>episode2</guid>
+        </item>
+    </channel>
+</rss>
